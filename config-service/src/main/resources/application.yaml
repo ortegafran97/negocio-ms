@@ -11,6 +11,6 @@ spring:
           default-label: master
           uri: https://github.com/ortegafran97/negocio-ms
           search-paths: service-configuration
-          clone-on-start: true
+#          clone-on-start: true
 #          username: ortegafran97
 #          password: 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
