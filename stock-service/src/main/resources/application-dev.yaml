@@ -12,7 +12,3 @@ spring:
     url: jdbc:h2:mem:jobsDB
     username: sa
     password: password
-
-  profiles:
-    active:
-      - dev

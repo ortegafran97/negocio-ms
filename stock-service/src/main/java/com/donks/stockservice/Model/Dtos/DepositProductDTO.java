@@ -1,6 +1,5 @@
 package com.donks.stockservice.Model.Dtos;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
