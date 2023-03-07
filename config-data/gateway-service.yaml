@@ -20,7 +20,7 @@ spring:
       - id: stock-service
         uri: lb://stock-service/
         predicates:
-          - Path=/stock/**, /product/**, /seller/**, /stock-sv/**
+          - Path=/stock-sv/**
     discovery:
       locator:
         enable: true
