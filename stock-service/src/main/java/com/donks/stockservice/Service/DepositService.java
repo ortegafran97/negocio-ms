@@ -37,11 +37,11 @@ public class DepositService {
     }
 
     public List<DepositDTO> getDepositsForProduct(UUID idProduct){
-        List<DepositDTO> contiene = findAll()
-                .stream().filter(p -> containsProduct(p,idProduct))
-                .toList();
 
-        return contiene;
+        return findAll()
+                .stream()
+                .filter(p -> containsProduct(p,idProduct))
+                .collect(Collectors.toList());
     }
 
     public Boolean containsProduct(DepositDTO deposit, UUID idProduct){

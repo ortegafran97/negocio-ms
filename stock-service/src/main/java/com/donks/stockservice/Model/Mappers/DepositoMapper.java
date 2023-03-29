@@ -19,7 +19,7 @@ public class DepositoMapper {
                                 .map(DepositProductMapper::entityToDto)
                                 .collect(Collectors.toList()),
                         SellerMapper.entityToDTO(e.getSeller()),
-                        e.getEntryDate()
+                        e.getDate()
                 ))
                 .orElse(new DepositDTO());
     }
@@ -28,7 +28,7 @@ public class DepositoMapper {
         Deposit entity = new Deposit();
 
         entity.setId_deposit(dto.getId());
-        entity.setEntryDate(dto.getDate());
+        entity.setDate(dto.getDate());
         entity.setProducts(dto.getProducts()
                 .stream()
                 .map(DepositProductMapper::dtoToEntity)

@@ -2,8 +2,6 @@ package com.donks.stockservice.Model.Mappers;
 
 import com.donks.stockservice.Model.DepositProduct;
 import com.donks.stockservice.Model.Dtos.DepositProductDTO;
-import com.donks.stockservice.Model.Dtos.ProductDTO;
-import com.donks.stockservice.Model.Product;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -15,7 +13,7 @@ public class DepositProductMapper {
         return Optional.ofNullable(entity)
                 .map(e -> new DepositProductDTO(
                         entity.getId(),
-                        ProductMapper.entityToDto(entity.getProductId()),
+                        ProductMapper.entityToDto(entity.getProduct()),
                         entity.getQuantity()
                 ))
                 .orElse(new DepositProductDTO());
@@ -24,7 +22,7 @@ public class DepositProductMapper {
     static public DepositProduct dtoToEntity(DepositProductDTO dto){
         DepositProduct entity = new DepositProduct();
 
-        entity.setProductId(ProductMapper.dtoToEntity(dto.getProduct()));
+        entity.setProduct(ProductMapper.dtoToEntity(dto.getProduct()));
         entity.setId(dto.getId());
         entity.setQuantity(dto.getQuantity());
 

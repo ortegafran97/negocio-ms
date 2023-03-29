@@ -23,7 +23,7 @@ public class DepositProduct{
     private UUID id;
 
     @OneToOne
-    @JoinColumn(referencedColumnName = "id_product",name = "id_product")
-    private Product productId;
+    @JoinColumn(referencedColumnName = "id_product",name = "product")
+    private Product product;
     private Integer quantity;
 }

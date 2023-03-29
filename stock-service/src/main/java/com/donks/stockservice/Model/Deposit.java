@@ -34,7 +34,7 @@ public class Deposit {
             orphanRemoval = true)
     private List<DepositProduct> products;
 
-    private LocalDateTime entryDate = LocalDateTime.now();
+    private LocalDateTime date = LocalDateTime.now();
 
 
 

@@ -25,7 +25,7 @@ public class StockService {
     public Integer getProductStock(UUID idProduct){
         List<DepositProductDTO> list = findAll()
                 .stream().filter(p-> p.getProduct().getId().equals(idProduct))
-                .toList();
+                .collect(Collectors.toList());
 
         if(list.isEmpty())
             return null;
