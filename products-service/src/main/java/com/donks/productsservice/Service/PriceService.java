@@ -5,6 +5,7 @@ import com.donks.productsservice.Model.Price;
 import com.donks.productsservice.Model.Product;
 import com.donks.productsservice.Repository.PriceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,17 +26,17 @@ public class PriceService {
     }
 
     public List<Price> findPricesForProduct(Product product){
-        return priceRepository.findByProduct(product);
+        return priceRepository.findByProduct(product, Sort.by(Sort.Direction.DESC,"date"));
     }
 
     public List<Price> findPurchasesForProduct(Product p){
-        return priceRepository.findByProduct(p)
+        return priceRepository.findByProduct(p, Sort.by(Sort.Direction.DESC,"date"))
                 .stream()
                 .filter(e -> e.getType().equals(PriceType.PURCHASE))
                 .collect(Collectors.toList());
     }
     public List<Price> findSalesForProduct(Product p){
-        return priceRepository.findByProduct(p)
+        return priceRepository.findByProduct(p, Sort.by(Sort.Direction.DESC,"date"))
                 .stream()
                 .filter(e -> e.getType().equals(PriceType.SALE))
                 .collect(Collectors.toList());
