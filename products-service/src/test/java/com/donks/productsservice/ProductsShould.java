@@ -62,6 +62,23 @@ public class ProductsShould {
     }
 
     @Test
+    public void save_and_find_prices_for_product(){
+        Product p = productService.save(new Product(UUID.randomUUID(),"producto 1",null)).get();
+
+        List.of(
+                new Price(UUID.randomUUID(),15.0, LocalDateTime.now(), PriceType.PURCHASE, p),
+                new Price(UUID.randomUUID(),12.0, LocalDateTime.now(), PriceType.PURCHASE, p),
+                new Price(UUID.randomUUID(),13.0, LocalDateTime.now(), PriceType.PURCHASE, p),
+                new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.PURCHASE, p),
+                new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.SALE, p),
+                new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.SALE, p),
+                new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.SALE, p)
+        ).forEach(e -> priceService.save(e));
+
+        assertEquals(7,priceService.findPricesForProduct(p).size());
+    }
+
+    @Test
     public void find_purchases_for_product() {
         Product p = productService.save(new Product(UUID.randomUUID(),"producto 1",null)).get();
 
