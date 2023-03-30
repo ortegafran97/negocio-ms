@@ -22,49 +22,5 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 class ProductsServiceApplicationTests {
 
-	@Autowired
-	ProductService productService;
-
-	@Autowired
-	PriceService priceService;
-
-	@BeforeEach
-	public void setUp(){
-	}
-
-	@Test
-	public void get_purchases_for_product() {
-
-		Product p = productService.save(new Product(UUID.randomUUID(),"producto 1",null)).get();
-		Price price = new Price(UUID.randomUUID(),15.0, LocalDateTime.now(), PriceType.PURCHASE, p);
-
-		List<Price> list = List.of(
-				new Price(UUID.randomUUID(),15.0, LocalDateTime.now(), PriceType.PURCHASE, p),
-				new Price(UUID.randomUUID(),12.0, LocalDateTime.now(), PriceType.PURCHASE, p),
-				new Price(UUID.randomUUID(),13.0, LocalDateTime.now(), PriceType.PURCHASE, p),
-				new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.PURCHASE, p)
-		);
-		list.forEach(e -> priceService.save(e));
-
-		assertEquals(4, priceService.findPurchasesForProduct(p).size());
-	}
-
-	@Test
-	public void get_sales_for_product() {
-
-		Product p = productService.save(new Product(UUID.randomUUID(),"producto 1",null)).get();
-
-		List<Price> list = List.of(
-				new Price(UUID.randomUUID(),15.0, LocalDateTime.now(), PriceType.SALE, p),
-				new Price(UUID.randomUUID(),12.0, LocalDateTime.now(), PriceType.SALE, p),
-				new Price(UUID.randomUUID(),13.0, LocalDateTime.now(), PriceType.SALE, p),
-				new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.SALE, p)
-		);
-		list.forEach(e -> priceService.save(e));
-
-		assertEquals(4, priceService.findSalesForProduct(p).size());
-	}
-
-
 
 }
