@@ -21,6 +21,10 @@ spring:
         uri: lb://stock-service/
         predicates:
           - Path=/stock-sv/**
+      - id: products-service
+        uri: lb://products-service/
+        predicates:
+          - Path=/products/**
     discovery:
       locator:
         enable: true
