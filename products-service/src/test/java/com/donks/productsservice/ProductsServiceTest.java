@@ -16,13 +16,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ProductsShould {
+public class ProductsServiceTest {
 
     @Autowired
     ProductService productService;
@@ -108,6 +109,36 @@ public class ProductsShould {
         assertEquals(4, priceService.findSalesForProduct(p).size());
     }
 
+    @Test
+    public void find_prices_sorted(){
+        Product p = productService.save(new Product(UUID.randomUUID(),"producto 1",null)).get();
 
+        List.of(
+                new Price(UUID.randomUUID(),15.0, LocalDateTime.now(), PriceType.SALE, p),
+                new Price(UUID.randomUUID(),12.0, LocalDateTime.now(), PriceType.SALE, p),
+                new Price(UUID.randomUUID(),13.0, LocalDateTime.now(), PriceType.SALE, p),
+                new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.SALE, p),
+                new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.PURCHASE, p)
+        ).forEach(e -> {
+            try {
+                e.setDate(LocalDateTime.now());
+                priceService.save(e);
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        List<Price> list = priceService.findPricesForProduct(p);
+        System.out.println(list);
+
+        int i = 0;
+        while(i < list.size()-1 && (list.get(i).getDate().isAfter(list.get(i+1).getDate()))) {
+            i++;
+        };
+
+        assertEquals(list.size() - 1,i);
+
+    }
 
 }
