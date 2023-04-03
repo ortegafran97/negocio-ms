@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,6 +18,11 @@ public class PriceController {
     @Autowired
     PriceService priceService;
 
+    @PostMapping
+    public ResponseEntity<Price> save(@RequestBody Price price){
+        return ResponseEntity.ok(priceService.save(price));
+    }
+
     @GetMapping
     public ResponseEntity<List<Price>> findAll() {
         return ResponseEntity.ok(priceService.findAll());
@@ -26,29 +30,52 @@ public class PriceController {
 
     @GetMapping("/{idPrice}")
     public ResponseEntity<Optional<Price>> findById(@PathVariable("idPrice") UUID idPrice){
-        return ResponseEntity.ok(priceService.findById(idPrice));
+        Optional<Price> price = priceService.findById(idPrice);
+
+        if(price.isEmpty())
+            throw new NotFoundException("Price no existe");
+
+        return ResponseEntity.ok(price);
     }
 
     @GetMapping("/all/{idProduct}")
-    public ResponseEntity<List<Price>> findPricesForProduct(@PathVariable("idProduct") UUID idProduct)
-            throws NotFoundException {
-        return ResponseEntity.ok(priceService.findPricesForProduct(idProduct));
+    public ResponseEntity<List<Price>> findPricesForProduct(@PathVariable("idProduct") UUID idProduct){
+        List<Price> list = priceService.findPricesForProduct(idProduct);
+
+        if(list == null)
+            throw new NotFoundException("El producto no existe");
+
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/sale/{idProduct}")
-    public ResponseEntity<List<Price>> findSalePrices(@PathVariable("idProduct") UUID id)
-            throws NotFoundException{
-        return ResponseEntity.ok(priceService.findSalesForProduct(id));
+    public ResponseEntity<List<Price>> findSalePrices(@PathVariable("idProduct") UUID id){
+        List<Price> list = priceService.findSalesForProduct(id);
+
+        if(list == null)
+            throw new NotFoundException("El producto no existe");
+
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/purchase/{idProduct}")
-    public ResponseEntity<List<Price>> findPurchasePrices(@PathVariable("idProduct") UUID id)
-            throws NotFoundException{
-        return ResponseEntity.ok(priceService.findPurchasesForProduct(id));
+    public ResponseEntity<List<Price>> findPurchasePrices(@PathVariable("idProduct") UUID id){
+        List<Price> list = priceService.findPurchasesForProduct(id);
+
+        if(list==null)
+            throw new NotFoundException("El producto no existe");
+
+        return ResponseEntity.ok(list);
     }
 
-    public ResponseEntity<Price> save(@RequestBody Price price){
-        return ResponseEntity.ok(priceService.save(price));
+
+    @DeleteMapping("/{idPrice}")
+    public ResponseEntity<Boolean> deletePrice(@PathVariable("idPrice") UUID id){
+        Boolean deleted = priceService.deleteById(id);
+        if(!deleted)
+            throw new NotFoundException("No existe el producto");
+
+        return ResponseEntity.ok(deleted);
     }
 
 }
