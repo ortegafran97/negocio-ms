@@ -23,21 +23,16 @@ public class PriceService {
     @Autowired
     ProductService productService;
 
+    public Price save(Price price){
+        return priceRepository.save(price);
+    }
+
     public List<Price> findAll(){
         return priceRepository.findAll();
     }
 
     public Optional<Price> findById(UUID id){
         return priceRepository.findById(id);
-    }
-
-    public Boolean deleteById(UUID id){
-        priceRepository.deleteById(id);
-        return findById(id).isEmpty();
-    }
-
-    public Price save(Price price){
-        return priceRepository.save(price);
     }
 
     public List<Price> findPricesForProduct(Product product){
@@ -47,10 +42,8 @@ public class PriceService {
     public List<Price> findPricesForProduct(UUID idProduct){
         Optional<Product> p = productService.findById(idProduct);
 
-        if(p.isEmpty())
-            throw new NotFoundException("Producto no encontrado.");
+        return p.map(product -> priceRepository.findByProduct(product)).orElse(null);
 
-        return priceRepository.findByProduct(p.get());
     }
 
     public List<Price> findPurchasesForProduct(Product p){
@@ -89,4 +82,8 @@ public class PriceService {
         return findSalesForProduct(p);
     }
 
+    public Boolean deleteById(UUID id){
+        priceRepository.deleteById(id);
+        return findById(id).isEmpty();
+    }
 }
