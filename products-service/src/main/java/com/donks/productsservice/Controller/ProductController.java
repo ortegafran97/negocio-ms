@@ -1,5 +1,7 @@
 package com.donks.productsservice.Controller;
 
+import com.donks.productsservice.Exceptions.Classes.NotFoundException;
+import com.donks.productsservice.Exceptions.Classes.ValidationException;
 import com.donks.productsservice.Model.Product;
 import com.donks.productsservice.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +26,22 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Product>> findOne(@PathVariable("id") UUID idProduct){
-        return ResponseEntity.ok(productsService.findById(idProduct));
+        Optional<Product> p = productsService.findById(idProduct);
+
+        if(p.isEmpty())
+            throw new NotFoundException("El producto no existe");
+
+        return ResponseEntity.ok(p);
     }
 
     @PostMapping
     public ResponseEntity<Optional<Product>> save(@RequestBody Product product){
-        return ResponseEntity.ok(productsService.save(product));
+        Optional<Product> p = productsService.save(product);
+
+        if(p.isEmpty())
+            throw new ValidationException("El producto ya existe");
+
+        return ResponseEntity.ok(p);
     }
 
     @PutMapping("/{id}")
