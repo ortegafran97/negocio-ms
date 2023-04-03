@@ -141,4 +141,11 @@ public class ProductsServiceTest {
 
     }
 
+    @Test
+    public void get_null_prices_for_non_existent_product(){
+        List<Price> list = priceService.findPricesForProduct(UUID.randomUUID());
+
+        assertEquals(null,list);
+    }
+
 }
