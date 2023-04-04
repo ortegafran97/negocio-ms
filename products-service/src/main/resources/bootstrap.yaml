@@ -2,12 +2,14 @@ spring:
   application:
     name: products-service
 
+
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
   cloud:
     config:
       enabled: true
       uri: http://localhost:8081
+      profile: dev
 
   datasource:
     driver-class-name: org.h2.Driver
@@ -24,7 +26,3 @@ server:
   port: 0
   servlet:
     context-path: /products-sv
-
-eureka:
-  instance:
-    lease-renewal-interval-in-seconds: 5
