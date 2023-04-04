@@ -37,4 +37,16 @@ public class Price {
     @ManyToOne
     @JoinColumn(referencedColumnName = "id_product",name = "product")
     private Product product;
+
+    public Price(Product product, Double price, PriceType type){
+        this.id = UUID.randomUUID();
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+
+        this.product = product;
+        this.type = type;
+        this.price = price;
+    }
+
+
 }
