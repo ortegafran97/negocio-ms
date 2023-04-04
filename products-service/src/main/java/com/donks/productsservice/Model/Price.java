@@ -28,7 +28,8 @@ public class Price {
 
     private Double price;
 
-    private LocalDateTime date = LocalDateTime.now();
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)
     private PriceType type;
