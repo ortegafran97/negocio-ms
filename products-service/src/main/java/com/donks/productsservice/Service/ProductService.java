@@ -22,8 +22,11 @@ public class ProductService {
 
         LocalDateTime date = LocalDateTime.now();
 
-        product.setCreatedAt(date);
-        product.setUpdatedAt(date);
+        if(product.getCreatedAt() == null)
+            product.setCreatedAt(date);
+
+        if(product.getUpdatedAt() ==null)
+            product.setUpdatedAt(date);
 
         return Optional.of(productRepository.save(product));
     }
