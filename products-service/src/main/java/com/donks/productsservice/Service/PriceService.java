@@ -44,7 +44,7 @@ public class PriceService {
     }
 
     public List<Price> findPricesForProduct(Product product){
-        return priceRepository.findByProduct(product, Sort.by(Sort.Direction.DESC,"date"));
+        return priceRepository.findByProduct(product, Sort.by(Sort.Direction.DESC,"createdAt"));
     }
 
     public List<Price> findPricesForProduct(UUID idProduct){
@@ -56,7 +56,7 @@ public class PriceService {
 
     public List<Price> findPurchasesForProduct(Product p){
         return priceRepository
-                .findByProduct(p, Sort.by(Sort.Direction.DESC,"date"))
+                .findByProduct(p, Sort.by(Sort.Direction.DESC,"createdAt"))
                 .stream()
                 .filter(e -> e.getType().equals(PriceType.PURCHASE))
                 .collect(Collectors.toList());
@@ -74,7 +74,7 @@ public class PriceService {
 
     public List<Price> findSalesForProduct(Product p){
         return priceRepository
-                .findByProduct(p, Sort.by(Sort.Direction.DESC,"date"))
+                .findByProduct(p, Sort.by(Sort.Direction.DESC,"createdAt"))
                 .stream()
                 .filter(e -> e.getType().equals(PriceType.SALE))
                 .collect(Collectors.toList());
