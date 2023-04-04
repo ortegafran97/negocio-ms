@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,8 +24,15 @@ public class PriceService {
     @Autowired
     ProductService productService;
 
-    public Price save(Price price){
-        return priceRepository.save(price);
+    public Optional<Price> save(Price price){
+        if(price.getId() != null && findById(price.getId()).isPresent() )
+            return Optional.empty();
+
+        LocalDateTime date = LocalDateTime.now();
+        price.setCreatedAt(date);
+        price.setUpdatedAt(date);
+
+        return Optional.of(priceRepository.save(price));
     }
 
     public List<Price> findAll(){

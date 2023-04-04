@@ -1,6 +1,7 @@
 package com.donks.productsservice.Controller;
 
 import com.donks.productsservice.Exceptions.Classes.NotFoundException;
+import com.donks.productsservice.Exceptions.Classes.ValidationException;
 import com.donks.productsservice.Model.Price;
 import com.donks.productsservice.Service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,13 @@ public class PriceController {
     PriceService priceService;
 
     @PostMapping
-    public ResponseEntity<Price> save(@RequestBody Price price){
-        return ResponseEntity.ok(priceService.save(price));
+    public ResponseEntity<Optional<Price>> save(@RequestBody Price price){
+        Optional<Price> p = priceService.save(price);
+
+        if(p.isEmpty())
+            throw new ValidationException("No se pudo crear el precio");
+
+        return ResponseEntity.ok(p);
     }
 
     @GetMapping
