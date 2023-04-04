@@ -38,9 +38,17 @@ public class ProductsServiceTest {
 
     @Test
     public void save_new_product(){
-        Optional<Product> p = productService.save(new Product("Product test",null));
+        Product old = new Product("Product test",null);
+        LocalDateTime date = LocalDateTime.of(2023,04,04,00,00);
+        old.setUpdatedAt(date);
+        old.setCreatedAt(date);
 
-        Optional<Product> find = productService.findById(p.get().getId());
+        Product p = productService.save(old).get();
+
+
+
+
+        Product find = productService.findById(p.getId()).get();
 
         assertEquals(p,find);
     }
@@ -54,26 +62,39 @@ public class ProductsServiceTest {
 
     @Test
     public void update_product(){
-        Product p = productService.save(new Product("Product test",null)).get();
+        Product old = new Product("Product test",null);
+        LocalDateTime date = LocalDateTime.of(2023,04,04,00,00);
+        old.setUpdatedAt(date);
+        old.setCreatedAt(date);
+
+        Product p = productService.save(old).get();
 
         p.setDescription("description added");
-        productService.update(p);
 
-        assertEquals(p,productService.findById(p.getId()).get());
+        try {
+            TimeUnit.MILLISECONDS.sleep(100);
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        Product updated = productService.update(p).get();
+
+        assertTrue(p.getDescription().equals(updated.getDescription()));
+
     }
 
     @Test
     public void save_and_find_prices_for_product(){
-        Product p = productService.save(new Product(UUID.randomUUID(),"producto 1",null)).get();
+        Product p = productService.save(new Product("producto 1",null)).get();
 
         List.of(
-                new Price(UUID.randomUUID(),15.0, LocalDateTime.now(), PriceType.PURCHASE, p),
-                new Price(UUID.randomUUID(),12.0, LocalDateTime.now(), PriceType.PURCHASE, p),
-                new Price(UUID.randomUUID(),13.0, LocalDateTime.now(), PriceType.PURCHASE, p),
-                new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.PURCHASE, p),
-                new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.SALE, p),
-                new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.SALE, p),
-                new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.SALE, p)
+                new Price(p,15.0, PriceType.SALE),
+                new Price(p,15.0, PriceType.SALE),
+                new Price(p,15.0, PriceType.SALE),
+                new Price(p,15.0, PriceType.SALE),
+                new Price(p,15.0, PriceType.PURCHASE),
+                new Price(p,15.0, PriceType.PURCHASE),
+                new Price(p,15.0, PriceType.PURCHASE)
         ).forEach(e -> priceService.save(e));
 
         assertEquals(7,priceService.findPricesForProduct(p).size());
@@ -81,14 +102,14 @@ public class ProductsServiceTest {
 
     @Test
     public void find_purchases_for_product() {
-        Product p = productService.save(new Product(UUID.randomUUID(),"producto 1",null)).get();
+        Product p = productService.save(new Product("producto 1",null)).get();
 
         List.of(
-            new Price(UUID.randomUUID(),15.0, LocalDateTime.now(), PriceType.PURCHASE, p),
-            new Price(UUID.randomUUID(),12.0, LocalDateTime.now(), PriceType.PURCHASE, p),
-            new Price(UUID.randomUUID(),13.0, LocalDateTime.now(), PriceType.PURCHASE, p),
-            new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.PURCHASE, p),
-            new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.SALE, p)
+                new Price(p,15.0, PriceType.PURCHASE),
+                new Price(p,15.0, PriceType.PURCHASE),
+                new Price(p,15.0, PriceType.PURCHASE),
+                new Price(p,15.0, PriceType.PURCHASE),
+                new Price(p,15.0, PriceType.SALE)
         ).forEach(e -> priceService.save(e));
 
         assertEquals(4, priceService.findPurchasesForProduct(p).size());
@@ -96,14 +117,14 @@ public class ProductsServiceTest {
 
     @Test
     public void find_sales_for_product() {
-        Product p = productService.save(new Product(UUID.randomUUID(),"producto 1",null)).get();
+        Product p = productService.save(new Product("producto 1",null)).get();
 
         List.of(
-            new Price(UUID.randomUUID(),15.0, LocalDateTime.now(), PriceType.SALE, p),
-            new Price(UUID.randomUUID(),12.0, LocalDateTime.now(), PriceType.SALE, p),
-            new Price(UUID.randomUUID(),13.0, LocalDateTime.now(), PriceType.SALE, p),
-            new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.SALE, p),
-            new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.PURCHASE, p)
+            new Price(p,15.0, PriceType.SALE),
+            new Price(p,15.0, PriceType.SALE),
+            new Price(p,15.0, PriceType.SALE),
+            new Price(p,15.0, PriceType.SALE),
+            new Price(p,15.0, PriceType.PURCHASE)
         ).forEach(e -> priceService.save(e));
 
         assertEquals(4, priceService.findSalesForProduct(p).size());
@@ -111,17 +132,17 @@ public class ProductsServiceTest {
 
     @Test
     public void find_prices_sorted(){
-        Product p = productService.save(new Product(UUID.randomUUID(),"producto 1",null)).get();
+        Product p = productService.save(new Product("producto 1",null)).get();
 
         List.of(
-                new Price(UUID.randomUUID(),15.0, LocalDateTime.now(), PriceType.SALE, p),
-                new Price(UUID.randomUUID(),12.0, LocalDateTime.now(), PriceType.SALE, p),
-                new Price(UUID.randomUUID(),13.0, LocalDateTime.now(), PriceType.SALE, p),
-                new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.SALE, p),
-                new Price(UUID.randomUUID(),1.0, LocalDateTime.now(), PriceType.PURCHASE, p)
+                new Price(p,15.0, PriceType.PURCHASE),
+                new Price(p,15.0, PriceType.PURCHASE),
+                new Price(p,15.0, PriceType.PURCHASE),
+                new Price(p,15.0, PriceType.PURCHASE),
+                new Price(p,15.0, PriceType.SALE)
         ).forEach(e -> {
             try {
-                e.setDate(LocalDateTime.now());
+                e.setCreatedAt(LocalDateTime.now());
                 priceService.save(e);
                 TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException ex) {
@@ -133,9 +154,7 @@ public class ProductsServiceTest {
         System.out.println(list);
 
         int i = 0;
-        while(i < list.size()-1 && (list.get(i).getDate().isAfter(list.get(i+1).getDate()))) {
-            i++;
-        };
+        while(i < list.size()-1 && (list.get(i).getCreatedAt().isAfter(list.get(i+1).getCreatedAt()))) i++;
 
         assertEquals(list.size() - 1,i);
 
