@@ -25,6 +25,10 @@ spring:
         uri: lb://products-service/
         predicates:
           - Path=/products-sv/**
+      - id: deposit-service
+        uri: lb://deposit-service/
+        predicates:
+          - Path=/deposit-sv/**
     discovery:
       locator:
         enable: true
