@@ -1,8 +1,5 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Products" type="Application" factoryName="Application">
-    <envs>
-      <env name="spring.config.activate.on-profile" value="dev" />
-    </envs>
     <option name="MAIN_CLASS_NAME" value="com.donks.productsservice.ProductsServiceApplication" />
     <module name="products-service.main" />
     <extension name="coverage">
