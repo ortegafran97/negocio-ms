@@ -22,7 +22,7 @@ public class ProviderController {
     ProviderService providerService;
 
     @PostMapping
-    public ResponseEntity<Optional<Provider>> save(Provider provider){
+    public ResponseEntity<Optional<Provider>> save(@RequestBody Provider provider){
         Optional<Provider> created = providerService.save(provider);
 
         if(created.isEmpty())
@@ -55,7 +55,7 @@ public class ProviderController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> delete(UUID id){
+    public ResponseEntity<Boolean> delete(@PathVariable("id") UUID id){
         return ResponseEntity.ok(providerService.delete(id));
     }
 
