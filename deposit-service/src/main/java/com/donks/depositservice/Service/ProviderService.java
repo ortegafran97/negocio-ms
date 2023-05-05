@@ -47,8 +47,6 @@ public class ProviderService {
         return providerRepository.findById(id).isEmpty();
     }
     public Boolean delete(Provider p){
-
-
         providerRepository.delete(p);
         return providerRepository.findById(p.getId()).isEmpty();
     }
