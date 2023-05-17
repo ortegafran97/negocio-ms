@@ -36,4 +36,9 @@ public class Provider {
     public Provider(String name){
         this.name = name;
     }
+
+    public Provider(UUID id, String name){
+        this.setId(id);
+        this.name = name;
+    }
 }
