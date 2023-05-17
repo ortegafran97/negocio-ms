@@ -5,3 +5,6 @@ spring:
     config:
       uri: http://localhost:8081/
       name: discovery-service
+
+server:
+  port: 8761
