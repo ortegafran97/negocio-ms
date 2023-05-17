@@ -16,7 +16,7 @@ public interface ProductsFeignClient {
     List<Product> findAll();
 
     @GetMapping("/{id}")
-    Optional<Product> findOne(@PathVariable("id") UUID id);
+    Optional<Product> findById(@PathVariable("id") UUID id);
 
 
 
