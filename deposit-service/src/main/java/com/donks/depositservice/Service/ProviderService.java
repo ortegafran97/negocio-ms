@@ -50,4 +50,17 @@ public class ProviderService {
         providerRepository.delete(p);
         return providerRepository.findById(p.getId()).isEmpty();
     }
+
+    public Optional<Provider> findByName(String name){
+        Optional<Provider> found = providerRepository.findByName(name);
+
+        if(found.isEmpty())
+            return providerRepository.findByName("Undefined");
+
+        return found;
+    }
+
+    public List<Provider> findByText(String text){
+        return providerRepository.findByNameContainingIgnoreCase(text);
+    }
 }
