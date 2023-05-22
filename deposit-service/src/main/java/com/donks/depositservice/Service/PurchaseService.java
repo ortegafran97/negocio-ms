@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class PurchaseService {
@@ -30,7 +29,9 @@ public class PurchaseService {
 
         if(provider.isEmpty())
             p.setProvider(null);
+        else p.setProvider(provider.get());
 
+//        Purchase compra = purchaseRepository.save(p);
         return purchaseRepository.save(p);
     }
 
@@ -53,8 +54,8 @@ public class PurchaseService {
 
     public void setProduct(List<PurchaseItem> items){
         for (PurchaseItem i: items) {
-            Product p = productsService.findById(i.getProduct().getId()).get();
-            i.setProduct(p);
+            Optional<Product> p = productsService.findById(i.getProduct().getId());
+            p.ifPresent(i::setProduct);
         }
     }
 

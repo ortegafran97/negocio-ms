@@ -4,9 +4,7 @@ import com.donks.depositservice.Model.Purchase;
 import com.donks.depositservice.Service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +15,12 @@ import java.util.UUID;
 public class PurchaseController {
 
     @Autowired
-    PurchaseService purchaseService;
+    private PurchaseService purchaseService;
+
+    @PostMapping
+    public ResponseEntity<Purchase> saveOne(@RequestBody Purchase p){
+        return ResponseEntity.ok(purchaseService.saveOne(p));
+    }
 
     @GetMapping
     public ResponseEntity<List<Purchase>> findAll(){
@@ -25,13 +28,8 @@ public class PurchaseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Purchase>> findById(UUID id){
+    public ResponseEntity<Optional<Purchase>> findById(@PathVariable("id") UUID id){
         return ResponseEntity.ok(purchaseService.findById(id));
-    }
-
-
-    public ResponseEntity<Optional<Purchase>> saveOne(Purchase p){
-        return ResponseEntity.ok(Optional.empty());
     }
 
 }
