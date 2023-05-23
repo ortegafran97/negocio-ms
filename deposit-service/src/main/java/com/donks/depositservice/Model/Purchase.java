@@ -13,8 +13,8 @@ import java.util.*;
 @Table(name = "purchase")
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Purchase {
 
     @Id
@@ -35,7 +35,7 @@ public class Purchase {
     private List<PurchaseItem> items = new ArrayList<>();
 
     @ManyToOne
-    private Provider provider;
+    private Provider provider = null;
 
     /* METHODS */
     @Override
