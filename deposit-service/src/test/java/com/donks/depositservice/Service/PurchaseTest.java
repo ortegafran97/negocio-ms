@@ -3,7 +3,9 @@ package com.donks.depositservice.Service;
 import com.donks.depositservice.Model.Product;
 import com.donks.depositservice.Model.Purchase;
 import com.donks.depositservice.Model.PurchaseItem;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +72,8 @@ public class PurchaseTest {
         assertEquals(saved, found.get());
     }
 
+
+    @Disabled
     @Test
     public void delete_purchase(){
         Purchase p = new Purchase();

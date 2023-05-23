@@ -1,9 +1,6 @@
 package com.donks.depositservice.Service;
 
-import com.donks.depositservice.Model.Product;
-import com.donks.depositservice.Model.Provider;
-import com.donks.depositservice.Model.Purchase;
-import com.donks.depositservice.Model.PurchaseItem;
+import com.donks.depositservice.Model.*;
 import com.donks.depositservice.Repository.PurchaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,17 +19,26 @@ public class PurchaseService {
     @Autowired
     private ProviderService providerService;
 
+    @Autowired
+    private DepositService depositService;
+
     public Purchase saveOne(Purchase p){
         setProduct(p.getItems());
+        Optional<Provider> provider;
 
-        Optional<Provider> provider = providerService.findById(p.getProvider().getId());
 
-        if(provider.isEmpty())
-            p.setProvider(null);
-        else p.setProvider(provider.get());
+        if(p.getProvider()!=null) {
+            provider = providerService.findById(p.getProvider().getId());
 
-//        Purchase compra = purchaseRepository.save(p);
-        return purchaseRepository.save(p);
+            if (provider.isEmpty())
+                p.setProvider(null);
+            else p.setProvider(provider.get());
+        }
+        Purchase compra = purchaseRepository.save(p);
+
+        depositService.saveOne(new Deposit(compra,null));
+
+        return compra;
     }
 
     public List<Purchase> findAll(){

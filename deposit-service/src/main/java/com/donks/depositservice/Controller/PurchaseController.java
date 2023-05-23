@@ -1,6 +1,8 @@
 package com.donks.depositservice.Controller;
 
+import com.donks.depositservice.Model.Deposit;
 import com.donks.depositservice.Model.Purchase;
+import com.donks.depositservice.Service.DepositService;
 import com.donks.depositservice.Service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,16 @@ public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
 
+    @Autowired
+    private DepositService depositService;
     @PostMapping
     public ResponseEntity<Purchase> saveOne(@RequestBody Purchase p){
-        return ResponseEntity.ok(purchaseService.saveOne(p));
+        Purchase created = purchaseService.saveOne(p);
+
+        //For every purchase a deposit is created
+        Deposit d = depositService.saveOne(new Deposit(created,null));
+
+        return ResponseEntity.ok(created);
     }
 
     @GetMapping
