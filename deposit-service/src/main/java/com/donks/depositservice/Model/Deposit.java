@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Table(name = "deposit")
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,10 +20,16 @@ public class Deposit {
     private UUID id;
     private DepositState state = DepositState.PENDING;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime updatedAt = LocalDateTime.now();
     private String comment;
 
     @OneToOne
-    private Purchase purchase;
+    private Purchase purchase = null;
+
+    public Deposit(Purchase p, String comment){
+        id = UUID.randomUUID();
+        this.purchase = p;
+        this.comment = comment;
+    }
 }
