@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -19,7 +18,7 @@ import java.util.UUID;
 public class Product {
 
     @Id
-    @Column(name = "id_product",columnDefinition = "uuid")
+    @Column(name = "id_product", columnDefinition = "uuid")
     private UUID id;
     private String name;
     private String description;
@@ -32,7 +31,7 @@ public class Product {
         this.name = name;
         this.description = description;
 
-        LocalDateTime d = LocalDateTime.now();
+        LocalDateTime d = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
         this.createdAt = d;
         this.updatedAt = d;
     }
