@@ -13,6 +13,6 @@ public class UpdateProducts {
 
     @Scheduled(fixedRate = 15000) // Se ejecuta cada 1 hr (?
     public void updateProductsTask() {
-        productsService.updateProducts();
+        productsService.updateProductsData();
     }
 }
