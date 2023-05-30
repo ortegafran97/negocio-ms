@@ -24,10 +24,6 @@ public class PurchaseController {
     @PostMapping
     public ResponseEntity<Purchase> saveOne(@RequestBody Purchase p){
         Purchase created = purchaseService.saveOne(p);
-
-        //For every purchase a deposit is created
-        Deposit d = depositService.saveOne(new Deposit(created,null));
-
         return ResponseEntity.ok(created);
     }
 
