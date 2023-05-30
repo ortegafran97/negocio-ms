@@ -7,10 +7,10 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductsService {
@@ -35,11 +35,10 @@ public class ProductsService {
     }
 
     public Product save(@NotNull Product p){
-        p.setUpdatedAt(LocalDateTime.now());
         return productsRepository.save(p);
     }
 
-    public Optional<Product> update(@NotNull Product p){
+    public Optional<Product> updateData(@NotNull Product p){
         Optional<Product> exists = findById(p.getId());
 
         // Si no existe el producto, lo guarda
@@ -49,7 +48,6 @@ public class ProductsService {
 
         //Si el objeto es distinto del almacenado, guarda el nuevo
         if(!p.equals(exists.get())){
-            p.setUpdatedAt(LocalDateTime.now());
             return Optional.of(productsRepository.save(p));
         }
 
@@ -57,10 +55,17 @@ public class ProductsService {
         return exists;
     }
 
-    public void updateProducts(){
-        productsFeignClient
+    public void updateProductsData(){
+        List<Product> list =  productsFeignClient
                 .findAll()
                 .stream()
-                .map(this::update);
+                .map(this::updateData)
+                .filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
     }
+
+    public Optional<Product> findByText(String text){
+        return productsRepository.findByName(text).stream().findFirst();
+    }
+
+
 }

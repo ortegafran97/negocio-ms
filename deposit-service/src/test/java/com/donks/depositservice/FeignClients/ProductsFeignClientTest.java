@@ -30,7 +30,7 @@ class ProductsFeignClientTest {
         System.out.println("~~~~ Old products ~~~~~");
         old.forEach(System.out::println);
 
-        productsService.updateProducts();
+        productsService.updateProductsData();
         List<Product> updated = productsService.findAll();
         System.out.println("~~~~ updated products ~~~~~");
         updated.forEach(System.out::println);
