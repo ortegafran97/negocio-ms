@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 @Table(name = "deposit")
@@ -18,14 +19,16 @@ public class Deposit {
     @Id
     @Column(columnDefinition = "uuid")
     private UUID id;
+    @Column
+    @Enumerated(EnumType.STRING)
     private DepositState state = DepositState.PENDING;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
+    private LocalDateTime updatedAt = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
     private String comment;
 
-    @OneToOne
-    private Purchase purchase = null;
+    @OneToOne(targetEntity = Purchase.class)
+    private Purchase purchase;
 
     public Deposit(Purchase p, String comment){
         id = UUID.randomUUID();
