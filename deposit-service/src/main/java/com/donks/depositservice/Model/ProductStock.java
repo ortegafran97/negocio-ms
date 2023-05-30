@@ -3,12 +3,8 @@ package com.donks.depositservice.Model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -17,15 +13,14 @@ import java.util.UUID;
 @NoArgsConstructor(force = true)
 public class ProductStock {
 
+
+
     @Id
-    @Column(columnDefinition = "uuid")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private long quantity = 0;
+    private long quantity=0;
 
     @OneToOne
-    @NotNull
     private Product product;
-
-
 
 }
