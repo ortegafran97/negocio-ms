@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -23,4 +24,16 @@ public class ProductStock {
     @OneToOne
     private Product product;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProductStock)) return false;
+        ProductStock that = (ProductStock) o;
+        return quantity == that.quantity && Objects.equals(id, that.id) && Objects.equals(product, that.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, quantity, product);
+    }
 }
