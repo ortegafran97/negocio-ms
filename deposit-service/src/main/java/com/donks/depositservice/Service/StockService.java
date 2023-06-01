@@ -1,9 +1,8 @@
 package com.donks.depositservice.Service;
 
-import com.donks.depositservice.Model.Product;
-import com.donks.depositservice.Model.ProductStock;
-import com.donks.depositservice.Model.PurchaseItem;
+import com.donks.depositservice.Model.*;
 import com.donks.depositservice.Repository.StockRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +15,7 @@ public class StockService {
     @Autowired
     StockRepository stockRepository;
 
-    public void updateStocks(PurchaseItem item){
-
-    }
-
-    public ProductStock setStock(PurchaseItem item){
+    public ProductStock setStock(@NotNull PurchaseItem item){
         return setStock(item.getProduct(),item.getQuantity());
     }
 
@@ -40,8 +35,4 @@ public class StockService {
     public Optional<ProductStock> findByProduct(Product product){
         return stockRepository.findByProduct(product).stream().findFirst();
     }
-
-    /*public void delete(UUID id){
-        stockRepository.deleteById(id);
-    }*/
 }
