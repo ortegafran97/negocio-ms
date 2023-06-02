@@ -54,11 +54,8 @@ public class DepositTest {
 
     @Test
     public void deposit_is_created_when_purchase_is_saved(){
-        long beforeCount = depositService.findAll().size();
-        purchaseService.saveOne(purchase);
-        long afterCount = depositService.findAll().size();
-
-        assertTrue(beforeCount < afterCount);
+        Optional<Deposit> deposit_created = depositService.findByPurchase(purchaseService.saveOne(purchase));
+        assertTrue(deposit_created.isPresent());
     }
 
     @Test
