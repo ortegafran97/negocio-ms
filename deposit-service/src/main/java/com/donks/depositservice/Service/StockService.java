@@ -15,6 +15,9 @@ public class StockService {
     @Autowired
     StockRepository stockRepository;
 
+    @Autowired
+    ProductsService productsService;
+
     public ProductStock setStock(@NotNull PurchaseItem item){
         return setStock(item.getProduct(),item.getQuantity());
     }
@@ -34,5 +37,13 @@ public class StockService {
 
     public Optional<ProductStock> findByProduct(Product product){
         return stockRepository.findByProduct(product).stream().findFirst();
+    }
+
+    public Optional<ProductStock> findByProduct(UUID id){
+        Optional<Product> p = productsService.findById(id);
+        if(p.isEmpty())
+            return Optional.empty();
+
+        return findByProduct(p.get());
     }
 }

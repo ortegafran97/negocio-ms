@@ -1,4 +1,4 @@
-package com.donks.depositservice.Model;
+package com.donks.stockservice.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +12,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
-public class ProductStock {
+public class Stock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,8 +25,8 @@ public class ProductStock {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ProductStock)) return false;
-        ProductStock that = (ProductStock) o;
+        if (!(o instanceof Stock)) return false;
+        Stock that = (Stock) o;
         return quantity == that.quantity && Objects.equals(id, that.id) && Objects.equals(product, that.product);
     }
 

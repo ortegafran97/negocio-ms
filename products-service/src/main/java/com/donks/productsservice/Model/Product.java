@@ -30,6 +30,8 @@ public class Product {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    private String code;
+
 
     public Product(String name, String description){
         this.id = UUID.randomUUID();

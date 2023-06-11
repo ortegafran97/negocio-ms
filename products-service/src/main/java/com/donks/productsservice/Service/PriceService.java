@@ -43,6 +43,16 @@ public class PriceService {
         return priceRepository.findById(id);
     }
 
+    public Optional<Price> findLastSalePriceForProduct(Product p){
+        Optional<Price> price = priceRepository
+                .findByProduct(p, Sort.by(Sort.Direction.DESC,"createdAt"))
+                .stream()
+                .findFirst();
+
+        return price;
+
+    }
+
     public List<Price> findPricesForProduct(Product product){
         return priceRepository.findByProduct(product, Sort.by(Sort.Direction.DESC,"createdAt"));
     }

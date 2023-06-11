@@ -14,4 +14,5 @@ public interface StockRepository extends JpaRepository<ProductStock, UUID> {
     List<ProductStock> findByProduct(Product product);
 
     //TODO: agregar metodo para encontrar productos con poco stock
+    List<ProductStock> findByQuantityLessThan(long quantity);
 }
