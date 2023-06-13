@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,6 +25,18 @@ public class PriceService {
     @Autowired
     ProductService productService;
 
+    public Optional<Price> setPrice(Price price ){
+        Optional<Product> p = productService.findById(price.getProduct().getId());
+
+        if(p.isEmpty())
+            return Optional.empty();
+
+        if(price.getPrice().isNaN() || price.getPrice()<0)
+            return Optional.empty();
+
+        return Optional.of(priceRepository.save(price));
+    }
+
     public List<Price> findAll(){
         return priceRepository.findAll(Sort.by(Sort.Direction.DESC,"createdAt"));
     }
@@ -35,6 +48,12 @@ public class PriceService {
                 .findFirst();
 
         return lastPrice;
+    }
+
+    public List<Price> getHistoricPrices(Product product){
+        List<Price> list = new ArrayList<>(priceRepository
+                .findByProduct(product, Sort.by(Sort.Direction.DESC, "createdAt")));
+        return list;
     }
 
 }

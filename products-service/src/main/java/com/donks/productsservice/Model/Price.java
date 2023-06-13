@@ -32,14 +32,14 @@ public class Price {
     private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
-    private PriceType type;
+    private PriceType type = PriceType.SALE;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id_product",name = "product")
     private Product product;
 
     public Price(Product product, Double price, PriceType type){
-        this.id = UUID.randomUUID();
+        //this.id = UUID.randomUUID();
         this.createdAt = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
 
         this.product = product;
