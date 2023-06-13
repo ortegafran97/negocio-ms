@@ -30,7 +30,8 @@ public class Product {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    private String code;
+    // Código de barras
+    private String barCode;
 
 
     public Product(String name, String description){
