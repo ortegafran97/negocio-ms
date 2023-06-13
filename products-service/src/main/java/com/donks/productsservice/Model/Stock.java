@@ -22,4 +22,11 @@ public class Stock {
     @OneToOne
     private Product product;
 
+    public Stock(Product p, long quantity, String location){
+        this.id = UUID.randomUUID();
+        this.product = p;
+        this.quantity = quantity;
+        this.location = location;
+    }
+
 }
