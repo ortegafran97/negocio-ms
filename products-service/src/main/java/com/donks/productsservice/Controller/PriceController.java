@@ -26,18 +26,31 @@ public class PriceController {
 
     @PostMapping
     public ResponseEntity<Optional<Price>> save(@RequestBody Price price){
-        //TODO: save price
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(priceService.setPrice(price));
     }
 
     @GetMapping
     public ResponseEntity<List<Price>> findAll() {
-        //TODO:
         return ResponseEntity.ok(priceService.findAll());
     }
 
-    public ResponseEntity<Optional<Price>> getPrice(Product product){
-        return ResponseEntity.ok(priceService.getPriceForProduct(product));
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Price>> getPrice(@PathVariable("id") UUID idProduct){
+        Optional<Product> p = productService.findById(idProduct);
+        if(p.isEmpty())
+            throw new NotFoundException("No existe el producto");
+
+        return ResponseEntity.ok(priceService.getPriceForProduct(p.get()));
+    }
+
+    @GetMapping("/historic/{id}")
+    public ResponseEntity<List<Price>> getHistoricPrices(@PathVariable("id") UUID idProduct){
+        Optional<Product> p = productService.findById(idProduct);
+        if(p.isEmpty())
+            throw new NotFoundException("No existe el producto");
+
+        return ResponseEntity.ok(priceService.getHistoricPrices(p.get()));
     }
 
 
